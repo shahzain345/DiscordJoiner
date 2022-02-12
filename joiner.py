@@ -29,7 +29,10 @@ class Joiner:
     
     def joinServer(self):
         res = self.client.post(f'https://discord.com/api/v9/invites/{self.inv}', json={"captcha_key": self.getCap()})
-        print(res.json())
+        if res.status_code == 200:
+            print(f"{Fore.GREEN}{Style.BRIGHT}[>] Joined server {self.client.headers['authorization']} {Style.RESET_ALL}")
+        else:
+            print(f"{Fore.RED}{Style.BRIGHT}[>] Failed to join server {self.client.headers['authorization']} {Style.RESET_ALL}")
     def getCap(self):
         solvedCaptcha = None
         captchaKey = self.capKey
