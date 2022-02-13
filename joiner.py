@@ -26,7 +26,7 @@ class Joiner:
             "x-super-properties": 'eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiRGlzY29yZCBDbGllbnQiLCJyZWxlYXNlX2NoYW5uZWwiOiJzdGFibGUiLCJjbGllbnRfdmVyc2lvbiI6IjEuMC45MDAzIiwib3NfdmVyc2lvbiI6IjEwLjAuMjIwMDAiLCJvc19hcmNoIjoieDY0Iiwic3lzdGVtX2xvY2FsZSI6ImVuLVVTIiwiY2xpZW50X2J1aWxkX251bWJlciI6MTE0NDA3LCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ=='
         }, proxies=f"http://{random.choice(proxies)}")
         self.client.headers["authorization"] = token
-    
+        self.client.headers["x-fingerprint"] = self.client.get("https://discord.com/api/v9/experiments", timeout=30).json()["fingerprint"]
     def joinServer(self):
         res = self.client.post(f'https://discord.com/api/v9/invites/{self.inv}', json={"captcha_key": self.getCap()})
         if res.status_code == 200:
