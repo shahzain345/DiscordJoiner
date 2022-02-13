@@ -1,4 +1,5 @@
 import random
+from tkinter import EXCEPTION
 import httpx
 import json
 from colorama import Fore,Style
@@ -32,11 +33,14 @@ class Joiner:
             fingerprint = self.client.get("https://discord.com/api/v9/experiments", timeout=30).json()
         self.client.headers["x-fingerprint"] = fingerprint["fingerprint"]
     def joinServer(self):
-        res = self.client.post(f'https://discord.com/api/v9/invites/{self.inv}', json={"captcha_key": self.getCap()})
-        if res.status_code == 200:
-            print(f"{Fore.GREEN}{Style.BRIGHT}[>] Joined server {self.client.headers['authorization']} {Style.RESET_ALL}")
-        else:
-            print(f"{Fore.RED}{Style.BRIGHT}[>] Failed to join server {self.client.headers['authorization']} {Style.RESET_ALL}")
+        try:
+            res = self.client.post(f'https://discord.com/api/v9/invites/{self.inv}', json={"captcha_key": self.getCap()})
+            if res.status_code == 200:
+                print(f"{Fore.GREEN}{Style.BRIGHT}[>] Joined server {self.client.headers['authorization']} {Style.RESET_ALL}")
+            else:
+                print(f"{Fore.RED}{Style.BRIGHT}[>] Failed to join server {self.client.headers['authorization']} {Style.RESET_ALL}")
+        except Exception as e:
+            print(f"[?] Error: {e}")
     def getCap(self):
         solvedCaptcha = None
         captchaKey = self.capKey
